@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:xo_game/player_choice_widget.dart';
+import 'package:xo_game/game_border_screen.dart';
+import 'package:xo_game/widgets/player_choice_widget.dart';
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+class playerScreen extends StatelessWidget {
+  static String routeName = "playerScreen";
+  const playerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,19 +30,29 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(10),
                 child: Row(
                   children: [
                     Expanded(
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            GameBordingScreen.routeName,
+                          );
+                        },
                         child: PlayerChoice(symbol: 'x'),
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            GameBordingScreen.routeName,
+                          );
+                        },
                         child: PlayerChoice(symbol: 'o'),
                       ),
                     ),
