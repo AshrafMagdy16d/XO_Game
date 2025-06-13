@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:xo_game/widgets/bord_tile.dart';
 
-class GameBordingScreen extends StatelessWidget {
+class GameBordingScreen extends StatefulWidget {
   static const routeName = 'GameBordingScreen';
-  const GameBordingScreen({super.key});
+
+  @override
+  State<GameBordingScreen> createState() => _GameBordingScreenState();
+}
+
+class _GameBordingScreenState extends State<GameBordingScreen> {
+  List<String> bordState = ['', '', '', '', '', '', '', '', ''];
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +36,7 @@ class GameBordingScreen extends StatelessWidget {
                     color: Colors.white,
                   ),
                   child: Text(
-                    '0:05',
+                    'X : $player1Score  & O : $player2Score',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 32,
@@ -65,19 +71,31 @@ class GameBordingScreen extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  BordTile(SymbolText: "x"),
+                                  BordTile(
+                                    SymbolText: bordState[0],
+                                    index: 0,
+                                    onPlayerClick: onPlayerClick,
+                                  ),
                                   Container(
                                     width: 1,
                                     height: double.infinity,
                                     color: Colors.black,
                                   ),
-                                  BordTile(SymbolText: "o"),
+                                  BordTile(
+                                    SymbolText: bordState[1],
+                                    index: 1,
+                                    onPlayerClick: onPlayerClick,
+                                  ),
                                   Container(
                                     width: 1,
                                     height: double.infinity,
                                     color: Colors.black,
                                   ),
-                                  BordTile(SymbolText: ""),
+                                  BordTile(
+                                    SymbolText: bordState[2],
+                                    index: 2,
+                                    onPlayerClick: onPlayerClick,
+                                  ),
                                 ],
                               ),
                             ),
@@ -93,19 +111,31 @@ class GameBordingScreen extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  BordTile(SymbolText: "x"),
+                                  BordTile(
+                                    SymbolText: bordState[3],
+                                    index: 3,
+                                    onPlayerClick: onPlayerClick,
+                                  ),
                                   Container(
                                     width: 1,
                                     height: double.infinity,
                                     color: Colors.black,
                                   ),
-                                  BordTile(SymbolText: "o"),
+                                  BordTile(
+                                    SymbolText: bordState[4],
+                                    index: 4,
+                                    onPlayerClick: onPlayerClick,
+                                  ),
                                   Container(
                                     width: 1,
                                     height: double.infinity,
                                     color: Colors.black,
                                   ),
-                                  BordTile(SymbolText: ""),
+                                  BordTile(
+                                    SymbolText: bordState[5],
+                                    index: 5,
+                                    onPlayerClick: onPlayerClick,
+                                  ),
                                 ],
                               ),
                             ),
@@ -121,19 +151,31 @@ class GameBordingScreen extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  BordTile(SymbolText: "x"),
+                                  BordTile(
+                                    SymbolText: bordState[6],
+                                    index: 6,
+                                    onPlayerClick: onPlayerClick,
+                                  ),
                                   Container(
                                     width: 1,
                                     height: double.infinity,
                                     color: Colors.black,
                                   ),
-                                  BordTile(SymbolText: "o"),
+                                  BordTile(
+                                    SymbolText: bordState[7],
+                                    index: 7,
+                                    onPlayerClick: onPlayerClick,
+                                  ),
                                   Container(
                                     width: 1,
                                     height: double.infinity,
                                     color: Colors.black,
                                   ),
-                                  BordTile(SymbolText: ""),
+                                  BordTile(
+                                    SymbolText: bordState[8],
+                                    index: 8,
+                                    onPlayerClick: onPlayerClick,
+                                  ),
                                 ],
                               ),
                             ),
@@ -149,5 +191,67 @@ class GameBordingScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  int counter = 0;
+  int player1Score = 0;
+  int player2Score = 0;
+
+  void onPlayerClick(int index) {
+    if (bordState[index].isNotEmpty) {
+      return;
+    }
+
+    if (counter % 2 == 0) {
+      bordState[index] = 'x';
+    } else {
+      bordState[index] = 'o';
+    }
+    counter++;
+    if (checkWinner('x')) {
+      player1Score++;
+      Future.delayed(Duration(seconds: 1), () => restBoard());
+    } else if (checkWinner('o')) {
+      player2Score++;
+      Future.delayed(Duration(seconds: 1), () => restBoard());
+    } else if (counter == 9) {
+      Future.delayed(Duration(seconds: 1), () => restBoard());
+    }
+
+    setState(() {});
+  }
+
+  bool checkWinner(String symbol) {
+    for (int i = 0; i < 9; i = i + 3) {
+      if (bordState[i] == symbol &&
+          bordState[i + 1] == symbol &&
+          bordState[i + 2] == symbol) {
+        return true;
+      }
+    }
+    for (int i = 0; i < 3; i++) {
+      if (bordState[i] == symbol &&
+          bordState[i + 3] == symbol &&
+          bordState[i + 6] == symbol) {
+        return true;
+      }
+    }
+    if (bordState[0] == symbol &&
+        bordState[4] == symbol &&
+        bordState[8] == symbol) {
+      return true;
+    }
+    if (bordState[2] == symbol &&
+        bordState[4] == symbol &&
+        bordState[6] == symbol) {
+      return true;
+    }
+    return false;
+  }
+
+  void restBoard() {
+    bordState = ['', '', '', '', '', '', '', '', ''];
+    counter = 0;
+    setState(() {});
   }
 }
