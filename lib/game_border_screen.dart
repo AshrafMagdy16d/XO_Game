@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xo_game/game_bording_args.dart';
 import 'package:xo_game/widgets/bord_tile.dart';
 
 class GameBordingScreen extends StatefulWidget {
@@ -10,9 +11,11 @@ class GameBordingScreen extends StatefulWidget {
 
 class _GameBordingScreenState extends State<GameBordingScreen> {
   List<String> bordState = ['', '', '', '', '', '', '', '', ''];
-
+  late GameBordingArgs args;
+  String title = 'Player 1’s Turn';
   @override
   Widget build(BuildContext context) {
+    args = ModalRoute.of(context)?.settings.arguments as GameBordingArgs;
     return SafeArea(
       child: Container(
         decoration: BoxDecoration(
@@ -36,7 +39,7 @@ class _GameBordingScreenState extends State<GameBordingScreen> {
                     color: Colors.white,
                   ),
                   child: Text(
-                    'X : $player1Score  & O : $player2Score',
+                    '${args.firstPlayer}: $player1Score  & ${args.secondPlayer} : $player2Score',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 32,
@@ -47,7 +50,7 @@ class _GameBordingScreenState extends State<GameBordingScreen> {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  "Player 1’s Turn",
+                  title,
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -203,18 +206,26 @@ class _GameBordingScreenState extends State<GameBordingScreen> {
     }
 
     if (counter % 2 == 0) {
-      bordState[index] = 'x';
+      bordState[index] = args.firstPlayer;
+      title = 'Player 2’s Turn';
     } else {
-      bordState[index] = 'o';
+      bordState[index] = args.secondPlayer;
+      title = 'Player 1’s Turn';
     }
+
     counter++;
-    if (checkWinner('x')) {
+    if (checkWinner(args.firstPlayer)) {
+      title = 'Player 1 Win';
       player1Score++;
+
       Future.delayed(Duration(seconds: 1), () => restBoard());
-    } else if (checkWinner('o')) {
+    } else if (checkWinner(args.secondPlayer)) {
+      title = 'Player 2 Win';
       player2Score++;
+
       Future.delayed(Duration(seconds: 1), () => restBoard());
     } else if (counter == 9) {
+      title = 'no one winner';
       Future.delayed(Duration(seconds: 1), () => restBoard());
     }
 

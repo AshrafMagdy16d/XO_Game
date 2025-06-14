@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xo_game/game_border_screen.dart';
+import 'package:xo_game/game_bording_args.dart';
 import 'package:xo_game/widgets/player_choice_widget.dart';
 
 class playerScreen extends StatelessWidget {
@@ -39,6 +40,10 @@ class playerScreen extends StatelessWidget {
                           Navigator.pushNamed(
                             context,
                             GameBordingScreen.routeName,
+                            arguments: GameBordingArgs(
+                              firstPlayer: 'x',
+                              secondPlayer: 'o',
+                            ),
                           );
                         },
                         child: PlayerChoice(symbol: 'x'),
@@ -51,6 +56,10 @@ class playerScreen extends StatelessWidget {
                           Navigator.pushNamed(
                             context,
                             GameBordingScreen.routeName,
+                            arguments: GameBordingArgs(
+                              firstPlayer: 'o',
+                              secondPlayer: 'x',
+                            ),
                           );
                         },
                         child: PlayerChoice(symbol: 'o'),
